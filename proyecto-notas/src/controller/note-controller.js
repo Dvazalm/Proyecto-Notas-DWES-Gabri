@@ -51,6 +51,7 @@ export function eliminarDocumentoController(req, res) {
 
 
 
+
 /* ======================= VER TODOS LOS DOCUMENTO ======================= */
 export function verArchivosController(req, res) {
     // Verifica si la carpeta existe, si no, responde con un mensaje
@@ -59,28 +60,57 @@ export function verArchivosController(req, res) {
         return;
     }
 
-    // Lee todos los archivos en la carpeta
-    let archivos = fs.readdirSync(carpetaArchivos);
-
-    // Aplica orden ascendente o descendente según el parámetro 'orden'
-    const orden = req.query.orden || 'asc';
-    archivos = archivos.sort((a, b) => {
-        return orden === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+    // Lee todos los archivos en la carpeta con información de fecha de creación
+    let archivos = fs.readdirSync(carpetaArchivos).map(nombreArchivo => {
+        const rutaArchivo = path.join(carpetaArchivos, nombreArchivo);
+        const stats = fs.statSync(rutaArchivo);
+        const fechaCreacion = stats.birthtime;
+    const fechaFormateada = `${padNumber(fechaCreacion.getDate())}-${padNumber(fechaCreacion.getMonth() + 1)}-${fechaCreacion.getFullYear()} / ${padNumber(fechaCreacion.getHours())}:${padNumber(fechaCreacion.getMinutes())}`;
+        return {
+            nombre: nombreArchivo,
+            fechaCreacion: fechaCreacion,
+            fechaFormateada: fechaFormateada
+        };
     });
 
-    // Verifica si hay archivos en la carpeta después de aplicar el orden
+
+     /*-----------[FILTROS]-----------*/
+
+    // Aplica order ascendente o descendente según el parámetro 'order'
+    const order = req.query.order;
+    archivos = archivos.sort((a, b) => {
+        return order === 'asc' ? a.nombre.localeCompare(b.nombre) : b.nombre.localeCompare(a.nombre);
+    });
+
+    // Aplica filtro según el parámetro 'date'
+    const dateParam = req.query.date;
+    if (dateParam === 'new' || dateParam === 'old') {
+        archivos = archivos.sort((a, b) => {
+            return dateParam === 'new' ? b.fechaCreacion - a.fechaCreacion : a.fechaCreacion - b.fechaCreacion;
+        });
+    } else if (dateParam) {
+        res.send(`Filtro 'date' no válido. Debe ser 'new' u 'old'.`);
+        return;
+    }
+
+    // Verifica si hay archivos en la carpeta después de aplicar el order y el filtro
     if (archivos.length === 0) {
         res.send(`No hay archivos en la carpeta ${carpetaArchivos}.`);
     } else {
         // Envía la lista de archivos como respuesta
         res.send(`
-        <h2>Archivos en ${carpetaArchivos} (Orden ${orden}):
+        <h2>Archivos en ${carpetaArchivos}:
         </h2>
         <span style="font-size:20px;">
-        ${archivos.join('<br>')}
+        ${archivos.map(archivo => `${archivo.nombre} <span style="font-size:15px; padding-left:30px">(${archivo.fechaFormateada})</span>`).join('<br>')}
         </span>
         `);
     }
+}
+
+// Función para rellenar con cero un número menor a 10
+function padNumber(num) {
+    return num < 10 ? `0${num}` : num;
 }
 
 

@@ -1,9 +1,9 @@
 import { carpetaArchivos } from "../config.js";
 import fs from 'fs';
 import path from "path";
-//para importar
-import multer from 'multer';
 
+//multer para importar archivos
+import multer from 'multer';
 
 
 /* ======================= CREAR DOCUMENTO ======================= */
@@ -64,13 +64,13 @@ export function verArchivosController(req, res) {
     }
 
     // Lee todos los archivos en la carpeta con información de fecha de creación
-    let archivos = fs.readdirSync(carpetaArchivos).map(nombreArchivo => {
-        const rutaArchivo = path.join(carpetaArchivos, nombreArchivo);
+    let archivos = fs.readdirSync(carpetaArchivos).map(filename => {
+        const rutaArchivo = path.join(carpetaArchivos, filename);
         const stats = fs.statSync(rutaArchivo);
         const fechaCreacion = stats.birthtime;
     const fechaFormateada = `${padNumber(fechaCreacion.getDate())}-${padNumber(fechaCreacion.getMonth() + 1)}-${fechaCreacion.getFullYear()} / ${padNumber(fechaCreacion.getHours())}:${padNumber(fechaCreacion.getMinutes())}`;
         return {
-            nombre: nombreArchivo,
+            nombre: filename,
             fechaCreacion: fechaCreacion,
             fechaFormateada: fechaFormateada
         };
@@ -158,8 +158,50 @@ export function verDocumentoController(req, res) {
 /* ======================= IMPORTAR DOCUMENTO ======================= */
 
 
+// Configuración de Multer para manejar la carga de archivos
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(__dirname, '..', '..', 'src', 'files')); // Ruta relativa a la carpeta src
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  });
+
+export const upload = multer({ storage: storage });
 
 
+
+     /*-----------[Función]-----------*/
+
+export function importarDocumentoController(req, res) {
+    // Verificar si el archivo existe en la solicitud
+    if (!req.file) {
+      return res.status(400).send('No se proporcionó ningún archivo en la solicitud.');
+    }
+  
+    const filename = req.file.originalname;
+    const filePath = req.file.path; // Ruta temporal del archivo
+  
+    // Verificar si la carpeta de destino existe, si no, la crea
+    if (!fs.existsSync(carpetaArchivos)) {
+      fs.mkdirSync(carpetaArchivos, { recursive: true }); // También crea directorios padres si no existen
+    }
+  
+    const rutaArchivoDestino = path.join(carpetaArchivos, filename);
+  
+    // Copiar el archivo desde la ruta temporal a la carpeta de destino
+    fs.copyFile(filePath, rutaArchivoDestino, (err) => {
+      if (err) {
+        return res.status(500).send(`Error al importar el archivo: ${err.message}`);
+      }
+  
+      // Eliminar el archivo temporal después de copiarlo
+      fs.unlinkSync(filePath);
+  
+      res.send(`El archivo ${filename} ha sido importado a la carpeta ${carpetaArchivos}.`);
+    });
+  }
 
 
 

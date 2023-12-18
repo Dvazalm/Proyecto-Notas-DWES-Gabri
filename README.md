@@ -4,6 +4,7 @@
     » /nota/crear/nombre
     » /nota/eliminar/nombre
     » /nota/lista</li>
+    
     » /nota/ver/nombre
       › /nota/ver/nombre?order=asc
       › /nota/ver/nombre?order=desc

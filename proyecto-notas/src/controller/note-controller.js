@@ -1,6 +1,9 @@
 import { carpetaArchivos } from "../config.js";
 import fs from 'fs';
 import path from "path";
+//para importar
+import multer from 'multer';
+
 
 
 /* ======================= CREAR DOCUMENTO ======================= */
@@ -152,33 +155,17 @@ export function verDocumentoController(req, res) {
 
 
 
-// ...
-
 /* ======================= IMPORTAR DOCUMENTO ======================= */
-export function importarDocumentoController(req, res) {
-    const nombre = req.params.nombre;
 
-    // Verifica si la carpeta existe, si no, responde con un mensaje
-    if (!fs.existsSync(carpetaArchivos)) {
-        res.send(`La carpeta ${carpetaArchivos} no existe.`);
-        return;
-    }
 
-    const rutaArchivo = path.join(carpetaArchivos, `${nombre}.txt`);
 
-    // Verifica si el archivo existe
-    if (fs.existsSync(rutaArchivo)) {
-        // Implementa la lógica para importar el archivo según tus necesidades
-        // Puedes utilizar el contenido del archivo y realizar las acciones necesarias
-        // por ejemplo, almacenarlo en una base de datos o procesarlo de alguna manera.
 
-        res.send(`El archivo ${nombre}.txt ha sido importado.`);
-    } else {
-        res.send(`El archivo ${nombre}.txt no existe en la carpeta ${carpetaArchivos}.`);
-    }
-};
+
+
+
 
 /* ======================= EXPORTAR DOCUMENTO ======================= */
+
 export function exportarDocumentoController(req, res) {
     const nombre = req.params.nombre;
 
@@ -192,14 +179,11 @@ export function exportarDocumentoController(req, res) {
 
     // Verifica si el archivo existe
     if (fs.existsSync(rutaArchivo)) {
-        // Lee el contenido del archivo
-        const contenido = fs.readFileSync(rutaArchivo, 'utf-8');
+        // Imprime en la consola un mensaje de archivo descargado
+        console.log(`Archivo descargado: ${nombre}.txt`);
 
-        // Establece el encabezado Content-Disposition para indicar la descarga
-        res.setHeader('Content-Disposition', `attachment; filename="${nombre}.txt"`);
-        
-        // Envía el contenido como respuesta
-        res.send(contenido);
+        // Envía el archivo como descarga directa
+        res.download(rutaArchivo, `${nombre}.txt`);
     } else {
         res.send(`El archivo ${nombre}.txt no existe en la carpeta ${carpetaArchivos}.`);
     }

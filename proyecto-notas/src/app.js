@@ -28,9 +28,7 @@ server.delete('/nota/eliminar/:nombre', validateTokenMiddleware, documentControl
 server.get('/nota/lista', validateTokenMiddleware, documentController.verArchivosController);
 server.get('/nota/ver/:nombre', validateTokenMiddleware, documentController.verDocumentoController);
 
-// Nueva ruta para importar un archivo
 server.post('/nota/importar', validateTokenMiddleware, documentController.importarDocumentoController);
-// Nueva ruta para exportar un archivo
 server.get('/nota/exportar/:nombre', validateTokenMiddleware, documentController.exportarDocumentoController);
 
 // Ruta para generar un nuevo token

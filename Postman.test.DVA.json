@@ -1,0 +1,383 @@
+{
+	"info": {
+		"_postman_id": "f702fe89-46cb-43d5-b742-06a4a90a28f0",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31465286"
+	},
+	"item": [
+		{
+			"name": "generar token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Guardar token en la variable de entorno\", function () {\r",
+							"    const token = pm.response.json().token;\r",
+							"    console.log(\"Nuevo token:\", token);\r",
+							"    pm.environment.set('TOKEN', token);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3000/generar-token"
+			},
+			"response": []
+		},
+		{
+			"name": "probar error-middlewarw",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/probar-error"
+			},
+			"response": []
+		},
+		{
+			"name": "Crear TXT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`El archivo nombre.txt ya existe en la ruta \"./src/files\"` || `Archivo nombre4.txt fue creado con exito en la ruta \"./src/files\"`, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3000/nota/crear/nombre"
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar TXT repetido al crear",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`El archivo nombre.txt ya existe en la ruta \"./src/files\"` || `Archivo nombre4.txt fue creado con exito en la ruta \"./src/files\"`, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3000/nota/crear/nombre"
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Lista de notas sin filtro",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": "http://localhost:3000/nota/lista"
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Lista de notas asc",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/nota/lista?order=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"nota",
+						"lista"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Lista de notas desc",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/nota/lista?order=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"nota",
+						"lista"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Lista de notas filtro por fechas new",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/nota/lista?date=new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"nota",
+						"lista"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "new"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Lista de notas filtro por fechas OLD",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/nota/lista?date=old",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"nota",
+						"lista"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "old"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver contenido de archivo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/nota/ver/PruebaVerContenido"
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar TXT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`El archivo nombre.txt se eliminó en la ruta \"./src/files\".` || `nombre.txt no existe en la ruta \"./src/files\".`, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/nota/eliminar/nombre"
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar TXT no existe al borra",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`El archivo nombre.txt se eliminó en la ruta \"./src/files\".` || `nombre.txt no existe en la ruta \"./src/files\".`, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/nota/eliminar/nombre"
+			},
+			"response": []
+		},
+		{
+			"name": "importarTXT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/DAVID/Downloads/prueba-importar.txt"
+						}
+					]
+				},
+				"url": "http://localhost:3000/nota/importar/"
+			},
+			"response": []
+		},
+		{
+			"name": "Exportar TXT",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/nota/exportar/PruebaVerContenido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"nota",
+						"exportar",
+						"PruebaVerContenido"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{TOKEN}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

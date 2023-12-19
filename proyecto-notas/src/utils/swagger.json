@@ -1,0 +1,241 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de Ejemplo",
+      "description": "Descripción de tu API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/generar-token": {
+        "post": {
+          "summary": "Generar token de autenticación",
+          "description": "Endpoint para generar un token de autenticación.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "example": {
+                  "username": "tu_usuario",
+                  "password": "tu_contraseña"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Token generado correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "token": "tu_token"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/probar-error": {
+        "get": {
+          "summary": "Probar errores",
+          "description": "Endpoint para probar errores.",
+          "responses": {
+            "200": {
+              "description": "Respuesta exitosa",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "Respuesta exitosa"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "error": "Error interno"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/crear/nombre": {
+        "post": {
+          "summary": "Crear nota con nombre",
+          "description": "Endpoint para crear una nota con un nombre específico.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "example": {
+                  "nombre": "nombre_de_la_nota",
+                  "contenido": "contenido_de_la_nota"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Nota creada correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "mensaje": "Nota creada con éxito"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/lista": {
+        "get": {
+          "summary": "Obtener lista de notas",
+          "description": "Endpoint para obtener la lista de todas las notas.",
+          "responses": {
+            "200": {
+              "description": "Lista de notas obtenida correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "notas": [
+                      {
+                        "id": 1,
+                        "nombre": "nota1",
+                        "contenido": "contenido1"
+                      },
+                      {
+                        "id": 2,
+                        "nombre": "nota2",
+                        "contenido": "contenido2"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/probar-error-middlewarw": {
+        "get": {
+          "summary": "Probar error middleware",
+          "description": "Endpoint para probar errores relacionados con middleware.",
+          "responses": {
+            "200": {
+              "description": "Respuesta exitosa",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "message": "Respuesta exitosa"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Error interno del servidor",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "error": "Error interno"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/ver/PruebaVerContenido": {
+        "get": {
+          "summary": "Ver contenido de archivo",
+          "description": "Endpoint para ver el contenido de una nota por nombre.",
+          "responses": {
+            "200": {
+              "description": "Contenido de la nota obtenido correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "contenido": "Contenido de la nota PruebaVerContenido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/eliminar/nombre": {
+        "delete": {
+          "summary": "Borrar nota por nombre",
+          "description": "Endpoint para borrar una nota por nombre.",
+          "responses": {
+            "200": {
+              "description": "Nota eliminada correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "mensaje": "Nota eliminada con éxito"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/importar": {
+        "post": {
+          "summary": "Importar archivo de nota",
+          "description": "Endpoint para importar un archivo de nota.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "archivo": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Archivo importado correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "mensaje": "Archivo importado con éxito"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/nota/exportar/PruebaVerContenido": {
+        "get": {
+          "summary": "Exportar contenido de nota",
+          "description": "Endpoint para exportar el contenido de una nota por nombre.",
+          "responses": {
+            "200": {
+              "description": "Contenido de la nota exportado correctamente",
+              "content": {
+                "application/json": {
+                  "example": {
+                    "contenido": "Contenido de la nota PruebaVerContenido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

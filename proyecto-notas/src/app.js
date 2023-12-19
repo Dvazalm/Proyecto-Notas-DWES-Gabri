@@ -12,6 +12,12 @@ import { errorController, errorControlerRute } from './middleware/error-middlewa
 //middleware-loggin
 import { validateTokenMiddleware, generateToken } from './middleware/login-middleware.js';
 
+//Swagger
+import SwaggerUI from 'swagger-ui-express';
+import swaggerDocument from '../src/utils/swagger.json'  assert { type: "json" };
+
+
+
 
 /*==================== EXPRESS ====================*/
 const server = express();
@@ -27,7 +33,6 @@ server.post('/nota/crear/:nombre', validateTokenMiddleware, documentController.c
 server.delete('/nota/eliminar/:nombre', validateTokenMiddleware, documentController.eliminarDocumentoController);
 server.get('/nota/lista', validateTokenMiddleware, documentController.verArchivosController);
 server.get('/nota/ver/:nombre', validateTokenMiddleware, documentController.verDocumentoController);
-
 server.post('/nota/importar', validateTokenMiddleware, documentController.upload.single('archivo'), documentController.importarDocumentoController);
 server.get('/nota/exportar/:nombre', validateTokenMiddleware, documentController.exportarDocumentoController);
 
@@ -36,6 +41,11 @@ server.post('/generar-token', (req, res) => {
   const token = generateToken();
   res.json({ token });
 });
+
+
+
+server.use('/api-docs', SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
+
 
 /*==================== MIDDLEWARE ====================*/
 server.use(errorController); //Errores

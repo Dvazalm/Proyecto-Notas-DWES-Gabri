@@ -1,6 +1,8 @@
 ### Proyecto notas - David Vázquez Almenara
   
    ## Controlador
+    » /api-docs
+
     » /nota/crear/nombre
     » /nota/eliminar/nombre
     » /nota/lista</li>
